@@ -1,0 +1,20 @@
+{
+  "address": "127.0.0.1",
+  "port": 9092,
+  "bots": [
+    {
+	"uri": "/api/gogs",
+	"token": "TelegramBotToken",
+	"channel": 0,
+	"source": "gogs",
+	"format": "json"
+    },
+    {
+	"uri": "/api/jira",
+	"token": "TelegramBotToken",
+	"channel": 0,
+	"source": "jira",
+	"format": "json"
+    }
+  ]
+}
