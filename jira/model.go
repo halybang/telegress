@@ -55,14 +55,14 @@ type Author struct {
 }
 
 type Commit struct {
-	ID        string    `json:"id"`
-	Message   string    `json:"message"`
-	Timestamp time.Time `json:"timestamp"`
-	URL       string    `json:"url"`
-	Author    Author    `json:"author"`
-	Added     []string  `json:"added"`
-	Modified  []string  `json:"modified"`
-	Removed   []string  `json:"removed"`
+	ID        string   `json:"id"`
+	Message   string   `json:"message"`
+	Timestamp string   `json:"timestamp"`
+	URL       string   `json:"url"`
+	Author    Author   `json:"author"`
+	Added     []string `json:"added"`
+	Modified  []string `json:"modified"`
+	Removed   []string `json:"removed"`
 }
 
 type IssueHook struct {
@@ -106,13 +106,13 @@ type User struct {
 }
 
 type Comment struct {
-	Self         string    `json:"self"`
-	Id           int64     `json:"id"`
-	Body         string    `json:"body,omitempty"`
-	Author       User      `json:"author,omitempty"`
-	UpdateAuthor User      `json:"updateAuthor,omitempty"`
-	Created      time.Time `json:"created,omitempty"`
-	Updated      time.Time `json:"updated,omitempty"`
+	Self         string `json:"self"`
+	Id           int64  `json:"id"`
+	Body         string `json:"body,omitempty"`
+	Author       User   `json:"author,omitempty"`
+	UpdateAuthor User   `json:"updateAuthor,omitempty"`
+	Created      string `json:"created,omitempty"`
+	Updated      string `json:"updated,omitempty"`
 }
 
 type Issue struct {
@@ -144,9 +144,9 @@ type IssueField struct {
 	//Timetracking        interface    `json:"timetracking"`
 	//ResolutionDate        interface    `json:"resolutiondate"`
 
-	LastViewed time.Time `json:"lastViewed,omitempty"`
-	Creator    User      `json:"creator,omitempty"`
-	Reporter   User      `json:"reporter,omitempty"`
+	LastViewed string `json:"lastViewed,omitempty"`
+	Creator    User   `json:"creator,omitempty"`
+	Reporter   User   `json:"reporter,omitempty"`
 	// SubTask []interface `json:"subtasks,omitempty"`
 	// Priority interface `json:"priority,omitempty"`
 	// Labels []interface `json:"labels,omitempty"`
@@ -160,8 +160,8 @@ type IssueField struct {
 	// WorkLog interface `json:"worklog,omitempty"`
 	// Assignee interface `json:"assignee,omitempty"`
 	Status  IssueStatus `json:"status,omitempty"`
-	Created time.Time   `json:"created,omitempty"`
-	Updated time.Time   `json:"updated,omitempty"`
+	Created string      `json:"created,omitempty"`
+	Updated string      `json:"updated,omitempty"`
 }
 
 type IssueType struct {

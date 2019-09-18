@@ -35,6 +35,7 @@ func (r *Request) String() string {
 			r.Comment.Author,
 			r.Comment.Body)
 	}
+
 	return strNotify
 }
 
