@@ -10,6 +10,7 @@ import (
 	"net/url"
 	"os"
 	"strconv"
+	"strings"
 	"sync"
 
 	"github.com/gin-gonic/gin"
@@ -115,7 +116,7 @@ func MakeHandleFunc(r *gin.Engine, config *BotConfig) gin.HandlerFunc {
 				if err != nil {
 					log.Println(err)
 				} else {
-					filename := rq.WebhookEvent + ".txt"
+					filename := strings.Replace(rq.WebhookEvent, ":", "_", -1) + ".txt"
 					if _, err := os.Stat(filename); err != nil {
 						f, err := os.Create(filename)
 						if err != nil {
