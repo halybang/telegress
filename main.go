@@ -1,21 +1,22 @@
 package main
 
 import (
+	"bytes"
 	"flag"
 	"fmt"
 	"io/ioutil"
 	"log"
-	"strconv"
-
-	"bytes"
 	"net/http"
 	"net/url"
+	"os"
+	"strconv"
 	"sync"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-telegram-bot-api/telegram-bot-api"
 	"github.com/halybang/telegress/gitlab"
 	"github.com/halybang/telegress/gogs"
+	"github.com/halybang/telegress/jira"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 )
@@ -84,7 +85,7 @@ func MakeHandleFunc(r *gin.Engine, config *BotConfig) gin.HandlerFunc {
 	log.Printf("Init bot %v", config)
 	result, ok := bots.Load(config.Token)
 	if !ok {
-		return nil
+		//return nil
 	}
 	bot := result.(*tgbotapi.BotAPI)
 	if bot == nil {
@@ -94,34 +95,44 @@ func MakeHandleFunc(r *gin.Engine, config *BotConfig) gin.HandlerFunc {
 
 	wrappedHandler := func(r *gin.Engine, config *BotConfig) gin.HandlerFunc {
 		return func(c *gin.Context) {
+			var strNotify string
+			var err error
 			body, ioerr := ioutil.ReadAll(c.Request.Body)
 			if ioerr != nil {
 				c.String(400, "Could not read request body")
 				log.Println(ioerr)
 				return
 			}
-			//log.Printf("Handle request %v, data:%v", cfg.Uri, string(body))
-			gogsRq, err := gogs.Parse(string(body))
+			log.Printf("Handle request %v, data:%v", cfg.Uri, string(body))
+			if cfg.Source == "gogs" {
+				rq, err := gogs.Parse(string(body))
+				if err != nil {
+					log.Println(err)
+				}
+				strNotify = rq.String()
+			} else if cfg.Source == "jira" {
+				rq, err := jira.Parse(string(body))
+				if err != nil {
+					log.Println(err)
+				} else {
+					filename := rq.WebhookEvent + ".txt"
+					if _, err := os.Stat(filename); err != nil {
+						f, err := os.Create(filename)
+						if err != nil {
+							log.Printf("Write jira request to file %s error:%v", filename, err)
+						} else {
+							log.Printf("Write jira request to file %s", filename)
+							f.Write(body)
+							f.Close()
+						}
+					}
+					strNotify = rq.String()
+				}
+			}
 			if err != nil {
-				c.String(400, "Could not parse request body")
-				log.Println(err)
-				return
+				log.Printf("Error parse data: %v", err)
+				c.JSON(200, "OK")
 			}
-
-			var strNotify = fmt.Sprintf("Pusher:%s|%s|%s\r\n",
-				gogsRq.Pusher.FullName,
-				gogsRq.Repository.FullName,
-				gogsRq.Repository.UpdatedAt.Format("2006-01-02T15:04:05.999-07:00"),
-			)
-			for _, cmt := range gogsRq.Commits {
-				var strCmt = fmt.Sprintf("Committer:%s|%s|\r\n%s\r\n",
-					cmt.Committer.Name,
-					cmt.Timestamp.Format("2006-01-02T15:04:05.999-07:00"),
-					cmt.Message,
-				)
-				strNotify += strCmt
-			}
-
 			//log.Printf("Telebot output data: %s ", strNotify)
 			// msg := tgbotapi.NewMessage(config.Channel, string(body))
 			// msgRsp, errS := bot.Send(msg)
@@ -132,8 +143,8 @@ func MakeHandleFunc(r *gin.Engine, config *BotConfig) gin.HandlerFunc {
 			// }
 
 			params := url.Values{}
-			params.Add("chat_id", fmt.Sprintf("-%s", cfg.Channel))
-			params.Add("chat_id", strNotify)
+			params.Add("chat_id", fmt.Sprintf("-%d", cfg.Channel))
+			params.Add("text", strNotify)
 			var url = fmt.Sprintf("https://api.telegram.org/bot%s/sendMessage", cfg.Token)
 			//var str = fmt.Sprintf("chat_id=-%d&text=%s", cfg.Channel, string(strNotify))
 			var str = params.Encode()
@@ -201,7 +212,9 @@ func main() {
 				continue
 			}
 		}
-		log.Printf("Authorized on account %s", bot.Self.UserName)
+		if bot != nil {
+			log.Printf("Authorized on account %s", bot.Self.UserName)
+		}
 		// go RunBot(config, bot)
 		r.POST(botCfg.Uri, MakeHandleFunc(r, &botCfg))
 	}
