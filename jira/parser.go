@@ -26,13 +26,13 @@ func (r *Request) String() string {
 			strNotify = fmt.Sprintf("Event:%s|%s|%s\r\n%s",
 				r.WebhookEvent,
 				r.Issue.Fields.Project.Name,
-				r.Comment.Author,
+				r.Comment.Author.DisplayName,
 				r.Comment.Body)
 		}
 	default:
 		strNotify = fmt.Sprintf("Event:%s|%s|%s\r\n",
 			r.WebhookEvent,
-			r.Comment.Author,
+			r.Comment.Author.DisplayName,
 			r.Comment.Body)
 	}
 
@@ -42,7 +42,7 @@ func (r *Request) String() string {
 func (r *Request) ToTelegram() (string, error) {
 	strNotify := fmt.Sprintf("Event:%s|%s|%s\r\n",
 		r.WebhookEvent,
-		r.Comment.Author,
+		r.Comment.Author.DisplayName,
 		r.Comment.Body)
 	return strNotify, nil
 }

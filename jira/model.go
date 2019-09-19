@@ -107,7 +107,7 @@ type User struct {
 
 type Comment struct {
 	Self         string `json:"self"`
-	Id           int64  `json:"id"`
+	Id           string `json:"id"`
 	Body         string `json:"body,omitempty"`
 	Author       User   `json:"author,omitempty"`
 	UpdateAuthor User   `json:"updateAuthor,omitempty"`
@@ -117,7 +117,7 @@ type Comment struct {
 
 type Issue struct {
 	Self   string     `json:"self"`
-	Id     int64      `json:"id"`
+	Id     string     `json:"id"`
 	Key    string     `json:"key,omitempty"`
 	Fields IssueField `json:"fields,omitempty"`
 }
@@ -165,17 +165,17 @@ type IssueField struct {
 }
 
 type IssueType struct {
-	Self        string `json:"seft"`
-	Id          int64  `json:"id"`
-	Description string `json:"description"`
-	IconUrl     string `json:"iconUrl"`
-	Name        string `json:"name"`
-	SubTask     string `json:"subtask"`
+	Self        string      `json:"seft"`
+	Id          string      `json:"id"`
+	Description string      `json:"description"`
+	IconUrl     string      `json:"iconUrl"`
+	Name        string      `json:"name"`
+	SubTask     interface{} `json:"subtask"`
 }
 
 type Project struct {
 	Self           string `json:"self"`
-	Id             int64  `json:"id"`
+	Id             string `json:"id"`
 	Key            string `json:"key"`
 	Name           string `json:"name"`
 	ProjectTypeKey string `json:"projectTypeKey"`
@@ -183,7 +183,7 @@ type Project struct {
 
 type IssueStatus struct {
 	Self        string `json:"seft"`
-	Id          int64  `json:"id"`
+	Id          string `json:"id"`
 	Description string `json:"description"`
 	IconUrl     string `json:"iconUrl"`
 	Name        string `json:"name"`
