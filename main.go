@@ -83,12 +83,14 @@ func GogsHandler(c *gin.Context) {
 
 func MakeHandleFunc(r *gin.Engine, config *BotConfig) gin.HandlerFunc {
 
+	var bot *tgbotapi.BotAPI
 	log.Printf("Init bot %v", config)
 	result, ok := bots.Load(config.Token)
-	if !ok {
+	if !ok || result == nil {
 		//return nil
+	} else {
+		bot := result.(*tgbotapi.BotAPI)
 	}
-	bot := result.(*tgbotapi.BotAPI)
 	if bot == nil {
 
 	}
@@ -104,7 +106,8 @@ func MakeHandleFunc(r *gin.Engine, config *BotConfig) gin.HandlerFunc {
 				log.Println(ioerr)
 				return
 			}
-			log.Printf("Handle request %v, data:%v", cfg.Uri, string(body))
+
+			//log.Printf("Handle request %v, data:%v", cfg.Uri, string(body))
 			if cfg.Source == "gogs" {
 				rq, err := gogs.Parse(string(body))
 				if err != nil {
