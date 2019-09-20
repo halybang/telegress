@@ -12,19 +12,6 @@ type Request struct {
 	User         User    `json:"user"`
 	Comment      Comment `json:"comment,omitempty"`
 	Issue        Issue   `json:"issue,omitempty"`
-	// After             string     `json:"after"`
-	// Ref               string     `json:"ref"`
-	// CheckoutSha       string     `json:"checkout_sha"`
-	// UserID            int        `json:"user_id"`
-	// UserName          string     `json:"user_name"`
-	// UserUsername      string     `json:"user_username"`
-	// UserEmail         string     `json:"user_email"`
-	// UserAvatar        string     `json:"user_avatar"`
-	// ProjectID         int        `json:"project_id"`
-	// Project           Project    `json:"project"`
-	// Repository        Repository `json:"repository"`
-	// Commits           []Commit   `json:"commits"`
-	// TotalCommitsCount int        `json:"total_commits_count"`
 }
 
 //currently supported request types (object kinds)
@@ -95,14 +82,14 @@ type ObjectAttributes struct {
 }
 
 type User struct {
-	Self        string `json:"self"`
-	Name        string `json:"name,omitempty"`
-	Email       string `json:"emailAddress,omitempty"`
-	Key         string `json:"key,omitempty"`
-	DisplayName string `json:"displayName,omitempty"`
-	Active      bool   `json:"active,omitempty"`
-	TimeZone    string `json:"timeZone,omitempty"`
-	//AvatarURLs 	interface `json:"avatarUrls,omitempty"`
+	Self        string      `json:"self"`
+	Name        string      `json:"name,omitempty"`
+	Email       string      `json:"emailAddress,omitempty"`
+	Key         string      `json:"key,omitempty"`
+	DisplayName string      `json:"displayName,omitempty"`
+	Active      bool        `json:"active,omitempty"`
+	TimeZone    string      `json:"timeZone,omitempty"`
+	AvatarURLs  interface{} `json:"avatarUrls,omitempty"`
 }
 
 type Comment struct {
@@ -123,45 +110,45 @@ type Issue struct {
 }
 
 type IssueField struct {
-	IssueType   IssueType `json:"issuetype,omitempty"`
-	Description string    `json:"description,omitempty"`
-	Project     Project   `json:"project,omitempty"`
-	WorkRatio   int64     `json:"workratio,omitempty"`
-	Summary     string    `json:"summary,omitempty"`
-	//Components []interface     `json:"components"`
-	//FixVersions []interface     `json:"fixVersions"`
+	IssueType   IssueType     `json:"issuetype,omitempty"`
+	Description string        `json:"description,omitempty"`
+	Project     Project       `json:"project,omitempty"`
+	WorkRatio   int64         `json:"workratio,omitempty"`
+	Summary     string        `json:"summary,omitempty"`
+	Components  []interface{} `json:"components"`
+	FixVersions []interface{} `json:"fixVersions"`
 
-	//TimeSpent        interface    `json:"timespent"`
-	//TimeEstimate        interface    `json:"timeestimate"`
-	//TimeOriginalEstimate        interface    `json:"timeoriginalestimate"`
-	//AggregateTimeOriginalEstimate        interface    `json:"aggregatetimeoriginalestimate"`
+	TimeSpent                     interface{} `json:"timespent"`
+	TimeEstimate                  interface{} `json:"timeestimate"`
+	TimeOriginalEstimate          interface{} `json:"timeoriginalestimate"`
+	AggregateTimeOriginalEstimate interface{} `json:"aggregatetimeoriginalestimate"`
 
-	//AggregateTimeSpent        interface    `json:"aggregatetimespent"`
-	//AggregateTimeEstimate        interface    `json:"aggregatetimeestimate"`
-	//AggregateProgress        interface    `json:"aggregateprogress"`
+	AggregateTimeSpent    interface{} `json:"aggregatetimespent"`
+	AggregateTimeEstimate interface{} `json:"aggregatetimeestimate"`
+	AggregateProgress     interface{} `json:"aggregateprogress"`
 
-	//Resolution        interface    `json:"resolution"`
-	//Timetracking        interface    `json:"timetracking"`
-	//ResolutionDate        interface    `json:"resolutiondate"`
+	Resolution     interface{} `json:"resolution"`
+	Timetracking   interface{} `json:"timetracking"`
+	ResolutionDate interface{} `json:"resolutiondate"`
 
-	LastViewed string `json:"lastViewed,omitempty"`
-	Creator    User   `json:"creator,omitempty"`
-	Reporter   User   `json:"reporter,omitempty"`
-	// SubTask []interface `json:"subtasks,omitempty"`
-	// Priority interface `json:"priority,omitempty"`
-	// Labels []interface `json:"labels,omitempty"`
-	// Environment interface `json:"environment,omitempty"`
-	// Versions []interface `json:"versions,omitempty"`
-	// DueDate interface `json:"duedate,omitempty"`
-	// Progress interface `json:"progress,omitempty"`
-	// Comment interface `json:"comment,omitempty"`
-	// Issuelinks []interface `json:"issuelinks,omitempty"`
-	// Votes interface `json:"votes,omitempty"`
-	// WorkLog interface `json:"worklog,omitempty"`
-	// Assignee interface `json:"assignee,omitempty"`
-	Status  IssueStatus `json:"status,omitempty"`
-	Created string      `json:"created,omitempty"`
-	Updated string      `json:"updated,omitempty"`
+	LastViewed  string        `json:"lastViewed,omitempty"`
+	Creator     User          `json:"creator,omitempty"`
+	Reporter    User          `json:"reporter,omitempty"`
+	SubTask     []interface{} `json:"subtasks,omitempty"`
+	Priority    interface{}   `json:"priority,omitempty"`
+	Labels      []interface{} `json:"labels,omitempty"`
+	Environment interface{}   `json:"environment,omitempty"`
+	Versions    []interface{} `json:"versions,omitempty"`
+	DueDate     interface{}   `json:"duedate,omitempty"`
+	Progress    interface{}   `json:"progress,omitempty"`
+	Comment     interface{}   `json:"comment,omitempty"`
+	Issuelinks  []interface{} `json:"issuelinks,omitempty"`
+	Votes       interface{}   `json:"votes,omitempty"`
+	WorkLog     interface{}   `json:"worklog,omitempty"`
+	Assignee    interface{}   `json:"assignee,omitempty"`
+	Status      IssueStatus   `json:"status,omitempty"`
+	Created     string        `json:"created,omitempty"`
+	Updated     string        `json:"updated,omitempty"`
 }
 
 type IssueType struct {

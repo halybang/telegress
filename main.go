@@ -134,6 +134,9 @@ func MakeHandleFunc(r *gin.Engine, config *BotConfig) gin.HandlerFunc {
 				log.Printf("Error parse data: %v", err)
 				c.JSON(200, "OK")
 			}
+			if strNotify == "" {
+				c.JSON(200, "OK")
+			}
 			//log.Printf("Telebot output data: %s ", strNotify)
 			// msg := tgbotapi.NewMessage(config.Channel, string(body))
 			// msgRsp, errS := bot.Send(msg)
@@ -203,14 +206,15 @@ func main() {
 			botTmp, errBot := tgbotapi.NewBotAPI(botCfg.Token)
 			if errBot != nil {
 				log.Printf("Init bot token %s error %v", botCfg.Token, errBot)
-				continue
+				//continue
+			} else {
+				bot = botTmp
+				bots.Store(botCfg.Token, bot)
 			}
-			bot = botTmp
-			bots.Store(botCfg.Token, bot)
 		} else {
 			bot = result.(*tgbotapi.BotAPI)
 			if bot == nil {
-				continue
+				//continue
 			}
 		}
 		if bot != nil {

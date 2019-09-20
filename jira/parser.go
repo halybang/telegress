@@ -20,12 +20,13 @@ func (r *Request) String() string {
 	event := r.WebhookEvent
 	var strNotify string
 	switch event {
-	case "issue:created":
-	case "issue:updated":
+	case "jira:issue_created":
+	case "jira:issue_updated":
 		{
-			strNotify = fmt.Sprintf("Event:%s|%s|%s\r\n%s",
+			strNotify = fmt.Sprintf("Event:%s|%s|%s|%s\r\n%s",
 				r.WebhookEvent,
-				r.Issue.Fields.Project.Name,
+				r.Issue.Key,
+				r.Issue.Fields.Summary,
 				r.Comment.Author.DisplayName,
 				r.Comment.Body)
 		}
@@ -35,7 +36,6 @@ func (r *Request) String() string {
 			r.Comment.Author.DisplayName,
 			r.Comment.Body)
 	}
-
 	return strNotify
 }
 
