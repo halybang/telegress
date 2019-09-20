@@ -89,7 +89,7 @@ func MakeHandleFunc(r *gin.Engine, config *BotConfig) gin.HandlerFunc {
 	if !ok || result == nil {
 		//return nil
 	} else {
-		bot := result.(*tgbotapi.BotAPI)
+		bot = result.(*tgbotapi.BotAPI)
 	}
 	if bot == nil {
 
